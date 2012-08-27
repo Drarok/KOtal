@@ -69,6 +69,13 @@ class Kotal_View extends Kohana_View {
 			$tal = new PHPTAL;
 		}
 
+		// Apply any prefilters that have been set in the config.
+		if ((bool) $filters = Kohana::$config->load('kotal.filters')) {
+			foreach ($filters as $filter) {
+				$tal->addPreFilter(new $filter);
+			}
+		}
+
 		// Set TAL template file path
 		$tal->setTemplate($kohana_view_filename);
 

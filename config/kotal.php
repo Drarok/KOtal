@@ -8,14 +8,13 @@
  * @copyright  (c) 2010 Hanson Wong
  * @license    http://github.com/Dismounted/KOtal/blob/master/LICENSE
  */
-
 return array(
-	
+
 	/**
 	 * Whether KOtal is enabled for every view by default or not.
 	 */
 	'enabled' => TRUE,
-	
+
 	/**
 	 * The file extension used for TAL view files. Default is 'php'.
 	 */
@@ -31,4 +30,10 @@ return array(
 		'userguide',
 	),
 
+	/**
+	 * List of pre-filters to apply.
+	 */
+	'filters' => array(
+		// 'PHPTAL_PreFilter_StripComments',
+	),
 );
