@@ -10,12 +10,6 @@ Usage
 
 To begin, store all the KOtal files under modules/kotal/ and enable it through bootstrap.php.
 
-Unfortunately, the default error view will be broken by this. To work around this problem, you will need to add these lines to index.php *before* the call to `Kohana::init()` (please use the correct paths for your setup).
-
-	// Load the base class and our overridden one.
-	require_once SYSPATH . 'classes/Kohana/Kohana/Exception.php';
-	require_once MODPATH . 'kotal/classes/Kohana/Exception.php';
-
 For the most part, simply create and call views like you would normally under Kohana 3. The only difference is that the view code itself is under TAL rules.
 
 KOtal also routes i18n requests into native Kohana methods.
