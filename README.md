@@ -1,7 +1,7 @@
 KOtal
 ====
 
-KOtal is a module for Kohana 3 that implements PHPTAL as a view processor.
+KOtal is a module for Kohana 3+ that implements PHPTAL as a view processor.
 
 PHPTAL is a PHP implementation of Zope Page Templates (ZPT). To be short, PHPTAL is a XML/XHTML template library for PHP.
 
@@ -9,6 +9,12 @@ Usage
 ----
 
 To begin, store all the KOtal files under modules/kotal/ and enable it through bootstrap.php.
+
+Unfortunately, the default error view will be broken by this. To work around this problem, you will need to add these lines to index.php *before* the call to `Kohana::init()` (please use the correct paths for your setup).
+
+	// Load the base class and our overridden one.
+	require_once SYSPATH . 'classes/Kohana/Kohana/Exception.php';
+	require_once MODPATH . 'kotal/classes/Kohana/Exception.php';
 
 For the most part, simply create and call views like you would normally under Kohana 3. The only difference is that the view code itself is under TAL rules.
 
@@ -19,10 +25,19 @@ There are a few 'advanced' options, and they are shown in the examples below.
 Example
 ----
 
-Firstly, create a new view file called taltest.php and place it under views/.
+Firstly, create a new view file called taltest.xhtml and place it under views/.
 
-	<h1 tal:content="title">Sample Title</h1>
-	<p tal:repeat="person people" tal:content="person">Name</p>
+	<?xml version="1.0"?>
+	<tal:block
+		xmlns="http://www.w3.org/1999/xhtml"
+		xmlns:tal="http://xml.zope.org/namespaces/tal"
+		xmlns:metal="http://xml.zope.org/namespaces/metal"
+		xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+		xmlns:phptal="http://phptal.org/ns/phptal"
+	>
+		<h1 tal:content="title">Sample Title</h1>
+		<p tal:repeat="person people" tal:content="person">Name</p>
+	</tal:block>
 
 Then in your controller, add the following code to generate and display your view.
 
@@ -47,7 +62,7 @@ Accessing this action, you should see:
 	Jane
 	Maria
 
-Now say we didn't want to store TAL views with a 'php' extension. We would like to use 'html' instead. Simply change the extension on your views and change the option in config/kotal.php.
+Now say we didn't want to store TAL views with an 'xhtml' extension. We would like to use 'html' instead. Simply change the extension on your views and change the option in config/kotal.php.
 
 	'ext' => 'html',
 
