@@ -12,6 +12,16 @@
 class Kotal_View extends Kohana_View {
 
 	/**
+	 * @var array Cached list of excluded controllers
+	 */
+	static protected $_tal_exclude;
+
+	/**
+	 * @var bool Cached global setting to enable tal on views.
+	 */
+	static protected $_tal_enable_default;
+
+	/**
 	 * @var PHPTAL Working object, generated automatically when needed
 	 */
 	protected $_tal;
@@ -22,14 +32,11 @@ class Kotal_View extends Kohana_View {
 	protected $_tal_enable;
 
 	/**
-	 * @var array Cached list of excluded controllers
+	 * Overridden TAL context.
+	 *
+	 * @var mixed
 	 */
-	protected static $_tal_exclude;
-
-	/**
-	 * @var bool Cached global setting to enable tal on views.
-	 */
-	protected static $_tal_enable_default;
+	protected $_tal_context;
 
 	/**
 	 * Overrides default constructor to also include the PHPTAL library.
@@ -58,6 +65,20 @@ class Kotal_View extends Kohana_View {
 	}
 
 	/**
+	 * Setter for the PHPTAL context.
+	 *
+	 * @param mixed $context New context to use.
+	 *
+	 * @return object
+	 * @chainable
+	 */
+	public function setContext($context)
+	{
+		$this->_tal_context = $context;
+		return $this;
+	}
+
+	/**
 	 * Overrides the default method, and processes the view using PHPTAL.
 	 *
 	 * @param string Filename
@@ -66,20 +87,23 @@ class Kotal_View extends Kohana_View {
 	 *
 	 * @return string
 	 */
-	protected static function _capture($kohana_view_filename, array $kohana_view_data, PHPTAL &$tal = NULL)
+	protected static function _capture($kohana_view_filename, $context, PHPTAL &$tal = NULL)
 	{
 		// Create TAL object if it isn't given to us
 		if ($tal === NULL)
 		{
-			$tal = new PHPTAL;
-		}
+			$tal = new Kotal_PHPTAL;
 
-		// Apply any prefilters that have been set in the config.
-		if ((bool) $filters = Kohana::$config->load('kotal.filters')) {
-			foreach ($filters as $filter) {
-				$tal->addPreFilter(new $filter);
+			// Apply any prefilters that have been set in the config, only needs doing once.
+			if ((bool) $filters = Kohana::$config->load('kotal.filters')) {
+				foreach ($filters as $filter) {
+					$tal->addPreFilter(new $filter);
+				}
 			}
 		}
+
+		// Pass on the context.
+		$tal->setContext($context);
 
 		// Set TAL template file path
 		$tal->setTemplate($kohana_view_filename);
@@ -90,6 +114,7 @@ class Kotal_View extends Kohana_View {
 		// Add the source resolver
 		$tal->addSourceResolver(new Kotal_SourceResolver($kohana_view_filename));
 
+		/*
 		// Import the view variables to TAL namespace
 		if (empty(self::$_global_data) === FALSE)
 		{
@@ -104,6 +129,7 @@ class Kotal_View extends Kohana_View {
 		{
 			$tal->set($name, $value);
 		}
+		 */
 
 		// Capture the view output
 		ob_start();
@@ -155,7 +181,7 @@ class Kotal_View extends Kohana_View {
 		else
 		{
 			// Combine local and global data and capture the output
-			return self::_capture($this->_file, $this->_data, $this->_tal);
+			return self::_capture($this->_file, $this->_tal_context, $this->_tal);
 		}
 	}
 
