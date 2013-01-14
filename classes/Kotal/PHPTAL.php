@@ -3,6 +3,13 @@
 class Kotal_PHPTAL extends PHPTAL
 {
 	/**
+	 * type of syntax used in generated templates
+	 *
+	 * @var int
+	 */
+	protected $_outputMode = PHPTAL::HTML5;
+
+	/**
 	 * Overridden constructor, allowing a context to be passed in.
 	 *
 	 * @param mixed $path    Path, or FALSE to supply it later.
