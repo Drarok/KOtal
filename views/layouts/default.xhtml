@@ -5,12 +5,14 @@
 	xmlns:i18n="http://xml.zope.org/namespaces/i18n"
 	xmlns:phptal="http://phptal.org/ns/phptal"
 >
-<head>
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	<title tal:content="title | null"></title>
-	<link rel="stylesheet" type="text/css" href="/styles/style_screen.css" />
-</head>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<title tal:content="title | null"></title>
+		<link rel="stylesheet" type="text/css" href="/styles/style_screen.css" />
+	</head>
 
-<body tal:content="structure body">
-</body>
+	<body tal:content="structure body">
+	</body>
+</html>
 </tal:block>
