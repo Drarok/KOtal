@@ -102,8 +102,10 @@ class Kotal_View extends Kohana_View {
 			}
 		}
 
-		// Pass on the context.
-		$tal->setContext($context);
+		// Pass on the context, if valid.
+		if ($context) {
+			$tal->setContext($context);
+		}
 
 		// Set TAL template file path
 		$tal->setTemplate($kohana_view_filename);
