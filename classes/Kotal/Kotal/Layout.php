@@ -10,7 +10,19 @@
  */
 class Kotal_Kotal_Layout extends Kotal
 {
+	/**
+	 * Layout to use when rendering.
+	 *
+	 * @var string
+	 */
 	protected $_layout = 'default';
+
+	/**
+	 * Page title, put into the <title> element.
+	 *
+	 * @var string
+	 */
+	protected $_title = '';
 
 	/**
 	 * Render this view model, wrapped in a payout, and return its markup.
@@ -21,8 +33,10 @@ class Kotal_Kotal_Layout extends Kotal
 	 */
 	public function render($template = NULL)
 	{
-		$layout = View::factory('layouts/' . $this->_layout);
-		$layout->body = parent::render($template);
-		return $layout->render();
+		// This method uses PHPTAL directly. Possibly doesn't need to.
+		$tal = new Kotal_PHPTAL(Kohana::find_file('views', 'layouts/' . $this->_layout, 'xhtml'));
+		$tal->title = $this->_title;
+		$tal->body = parent::render($template);
+		return '<!DOCTYPE html>' . $tal->execute();
 	}
 }
