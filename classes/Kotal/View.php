@@ -39,6 +39,16 @@ class Kotal_View extends Kohana_View {
 	protected $_tal_context;
 
 	/**
+	 * Accessor for globally enabling/disabling TAL templates.
+	 *
+	 * @param bool $enabled TRUE to globally enable TAL.
+	 */
+	static public function tal_enable_default($enabled)
+	{
+		self::$_tal_enable_default = (bool) $enabled;
+	}
+
+	/**
 	 * Overrides default constructor to also include the PHPTAL library.
 	 *
 	 * @param string View filename
