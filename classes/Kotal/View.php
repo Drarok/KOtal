@@ -117,6 +117,13 @@ class Kotal_View extends Kohana_View {
 			$tal->setContext($context);
 		}
 
+		// Apply any prefilters that have been set in the config.
+		if ((bool) $filters = Kohana::$config->load('kotal.filters')) {
+			foreach ($filters as $filter) {
+				$tal->addPreFilter(new $filter);
+			}
+		}
+
 		// Set TAL template file path
 		$tal->setTemplate($kohana_view_filename);
 
@@ -307,8 +314,11 @@ class Kotal_View extends Kohana_View {
 	 */
 	protected function _check_tal_exclusions($clear = FALSE)
 	{
-		// Fetch current controller
-		$controller = UTF8::strtolower(Request::current()->controller());
+		// Fetch current controller (sometimes where's no request, such as when attempting to show an error).
+		$controller = NULL;
+		if ($request = Request::current()) {
+			$controller = UTF8::strtolower($request->controller());
+		}
 
 		// Cache exclusion list if it doesn't exist (saves calling strtolower)
 		if ($clear == TRUE OR self::$_tal_exclude === NULL)
