@@ -112,9 +112,21 @@ class Kotal_View extends Kohana_View {
 			}
 		}
 
-		// Pass on the context, if valid.
-		if ($context) {
+		if ($context instanceof Kotal_Layout) {
+			// Pass on the context.
 			$tal->setContext($context);
+		} else {
+			// Import the view variables to TAL namespace
+			if (! empty(self::$_global_data)) {
+				// Do globals first so that it can be overriden
+				foreach (self::$_global_data AS $name => $value) {
+					$tal->set($name, $value);
+				}
+			}
+
+			foreach ($context AS $name => $value) {
+				$tal->set($name, $value);
+			}
 		}
 
 		// Apply any prefilters that have been set in the config.
@@ -132,23 +144,6 @@ class Kotal_View extends Kohana_View {
 
 		// Add the source resolver
 		$tal->addSourceResolver(new Kotal_SourceResolver($kohana_view_filename));
-
-		/*
-		// Import the view variables to TAL namespace
-		if (empty(self::$_global_data) === FALSE)
-		{
-			// Do globals first so that it can be overriden
-			foreach (self::$_global_data AS $name => $value)
-			{
-				$tal->set($name, $value);
-			}
-		}
-
-		foreach ($kohana_view_data AS $name => $value)
-		{
-			$tal->set($name, $value);
-		}
-		 */
 
 		// Capture the view output
 		ob_start();
@@ -200,7 +195,11 @@ class Kotal_View extends Kohana_View {
 		else
 		{
 			// Combine local and global data and capture the output
-			return self::_capture($this->_file, $this->_tal_context, $this->_tal);
+			if ($this->_tal_context) {
+				return self::_capture($this->_file, $this->_tal_context, $this->_tal);
+			} else {
+				return self::_capture($this->_file, $this->_data, $this->_tal);
+			}
 		}
 	}
 
