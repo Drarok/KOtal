@@ -71,6 +71,12 @@ class Kotal_Kotal_Layout extends Kotal
 		return $this;
 	}
 
+	public function setLayout($layout)
+	{
+		$this->_layout = $layout;
+		return $this;
+	}
+
 	/**
 	 * Render this view model, wrapped in a layout, and return its markup.
 	 *
@@ -86,6 +92,6 @@ class Kotal_Kotal_Layout extends Kotal
 			$tal->$key = $value;
 		}
 		$tal->body = parent::render($template);
-		return '<!DOCTYPE html>' . $tal->execute();
+		return $tal->execute();
 	}
 }
