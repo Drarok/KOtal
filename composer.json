@@ -1,0 +1,18 @@
+{
+    "name": "drarok/kotal",
+    "description": "PHPTAL Templates for Kohana",
+    "require": {
+        "phptal/phptal": "dev-master"
+    },
+    "authors": [
+        {
+            "name": "Hanson Wong",
+            "email": "hanson.hs.wong@gmail.com"
+        },
+        {
+            "name": "Drarok Ithaqua",
+            "email": "source@catchall.drarok.com"
+        }
+    ],
+    "minimum-stability": "dev"
+}

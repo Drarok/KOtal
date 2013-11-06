@@ -16,9 +16,9 @@ return array(
 	'enabled' => TRUE,
 
 	/**
-	 * The file extension used for TAL view files. Default is 'php'.
+	 * The file extension used for TAL view files. Default is 'xhtml'.
 	 */
-	'ext' => 'php',
+	'ext' => 'xhtml',
 
 	/**
 	 * List of controllers automatically excluded from TAL processing.
