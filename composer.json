@@ -1,6 +1,7 @@
 {
     "name": "drarok/kotal",
     "description": "PHPTAL Templates for Kohana",
+    "type": "kohana-module",
     "require": {
         "phptal/phptal": "dev-master"
     },
